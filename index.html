@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>MOMO Coin</title>
+    <link rel="stylesheet" href="momo.css">
+
+    <script type="text/javascript">
+    var apiUrl = 'https://api-ropsten.etherscan.io/api?module=account&action=tokentx&contractaddress=0xbC6fAAA6Ad987310CCc48B875C9Df95621368748&page=1&offset=100&sort=asc&apikey='+ADD YOUR OWN API KEY HERE DUDE;
+    fetch(apiUrl).then(response => {
+      return response.json();
+    }).then(data => {
+      // Loop to populate data from JSON
+      for(var i = 0; i<data.result.length;i++){
+        var bNumb = data.result[i].blockNumber;
+        var timeStamp = data.result[i].timeStamp;
+        var sender = data.result[i].from;
+        var receiver = data.result[i].to;
+        var hash = data.result[i].hash;
+        var nonce = data.result[i].nonce;
+        var value = data.result[i].value/100000000; // Dividing by 1e8 since contract has 8 decimals
+        var conf = data.result[i].confirmations;
+        var name = data.result[i].tokenName;
+        var symbol = data.result[i].tokenSymbol;
+
+        // Converting timestamp into date
+        var date = new Date(timeStamp*1000);
+        var timeStamp = (date.getDate()+
+          "/"+(date.getMonth()+1)+
+          "/"+date.getFullYear()+
+          " "+date.getHours()+
+          ":"+date.getMinutes()+
+          ":"+date.getSeconds());
+
+        document.getElementById('txns').innerHTML+='<div class="trxnBlock border-gradient border-gradient-purple"><h2>✅ '+value+' MOMOs</h2>From: <b> '+sender+' </b>&nbsp;&nbsp;To: <b> '+receiver+' </b>&nbsp;&nbsp;Timestamp: <b> '+timeStamp+' </b><br>Block Number: <b> '+bNumb+' </b>&nbsp;&nbsp;Hash: <b> '+hash+' </b>&nbsp;&nbsp;Nonce: <b> '+nonce+' </b>&nbsp;&nbsp;Confirmations: <b> '+conf+' </b>&nbsp;&nbsp;Token Name: <b> '+name+' </b>&nbsp;&nbsp;Token Symbol: <b> '+symbol+' </b>&nbsp;&nbsp;</div>';
+
+      }
+      document.getElementById('txns').innerHTML+="<br><br><br>"
+    }).catch(err => {
+      console.error("Oops its an ERROR! >> "+err);
+    });
+</script>
+
+  </head>
+
+  <body>
+
+    <div class="titleDiv">
+      <div class="navbar">
+        <a class = "navOpt nO2" href="#track">🔎 Track the coin HERE!</a>
+      </div>
+
+      <p class=title><img src="assets/momo_ico.png" height="96px">&nbsp;&nbsp;&nbsp;&nbsp;Momo Coin </p>
+      <p class="subtitle"> An ERC20 token launched on Ropsten Network that can be tracked here.<br>I swear I hate momos 😭😭<br></p><br><br>
+      <input type="text" class="email" placeholder="Enter Email to receive updates!"></input>
+      <a href="#track" class="btna"><button class="btn sizeSU">Start Tracking!</button></a>
+      <b><div class="counter"></div></b>
+      <p class="counterST"> have signed up! </p>
+    </div>
+    <center>
+    <div class="titleDiv2" id="track">
+      <div class="transactions" id="txns">
+          <br><p class="title2">MOMO Tracker</p><br>
+      </div>
+
+    </div>
+    </center>
